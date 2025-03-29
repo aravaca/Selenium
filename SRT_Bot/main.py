@@ -8,19 +8,13 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import time
+import json
 
-#Booking Details - 예약 정보
-ACCOUNT_ID = "" #account id
-PASSWORD = "" #account password
-DEPARTURE_STATION = "대전" #천안아산역이면 역 제외하고 '천안아산'만  입력
-ARRIVAL_STATION = "수서"
+with open("config.json", "r", encoding="utf-8") as f:
+    config = json.load(f)
+
 DEPARTURE_DATE = input("Departure Date (YYYYMMDD): ") #YYYYMMDD
 ARRIVAL_DATE = input("Arrival Date (YYYYMMDD): ")
-DEPARTURE_TIME = "080000" #HH0000, 24H format, even hours only like 060000(6am), 140000(=2pm), etc
-ARRIVAL_TIME = "180000"
-SEAT_PREFERENCE = "창측좌석" #options: 내측좌석, 창측좌석, 1인석
-PHONE_NUM = "01027725840" # -없이 입력
-DATE_OF_BIRTH = "021219" #YYMMDD
 
 options = Options()
 options.add_experimental_option("detach", True)
@@ -44,26 +38,26 @@ wait.until(
 #select itinerary
 dep_station = driver.find_element(By.ID, "dptRsStnCdNm")
 dep_station.clear()
-dep_station.send_keys(DEPARTURE_STATION)
+dep_station.send_keys(config["DEPARTURE_STATION"])
 
 arv_station = driver.find_element(By.ID, "arvRsStnCdNm")
 arv_station.clear()
-arv_station.send_keys(ARRIVAL_STATION)
+arv_station.send_keys(config["ARRIVAL_STATION"])
 
 dep_date = driver.find_element(By.ID, "dptDt1")
 Select(dep_date).select_by_value(DEPARTURE_DATE)
 
 dep_time = driver.find_element(By.ID, "dptTm1")
-Select(dep_time).select_by_value(DEPARTURE_TIME)
+Select(dep_time).select_by_value(config["DEPARTURE_TIME"])
 
 arv_date = driver.find_element(By.ID, "dptDt2")
 Select(arv_date).select_by_value(ARRIVAL_DATE)
 
 arv_time = driver.find_element(By.ID, "dptTm2")
-Select(arv_time).select_by_value(ARRIVAL_TIME)
+Select(arv_time).select_by_value(config["ARRIVAL_TIME"])
 
 seat_type = driver.find_element(By.ID, "locSeatAttCd1")
-Select(seat_type).select_by_visible_text(SEAT_PREFERENCE)
+Select(seat_type).select_by_visible_text(config["SEAT_PREFERENCE"])
 
 submit = driver.find_element(By.CSS_SELECTOR, "#search_top_tag > input")
 submit.click()
@@ -93,10 +87,10 @@ wait.until(
      EC.presence_of_element_located((By.ID, "srchDvNm01"))
 )
 account_id = driver.find_element(By.ID, "srchDvNm01")
-account_id.send_keys(ACCOUNT_ID)
+account_id.send_keys(config["ACCOUNT_ID"])
 
 password = driver.find_element(By.ID, "hmpgPwdCphd01")
-password.send_keys(PASSWORD + Keys.ENTER)
+password.send_keys(config["PASSWORD"] + Keys.ENTER)
 
 #loading confirmation page
 wait.until(
@@ -171,10 +165,10 @@ wait.until(
     EC.presence_of_element_located((By.NAME, "phoneNumber"))
 )
 phone_num = driver.find_element(By.NAME, "phoneNumber")
-phone_num.send_keys(PHONE_NUM)
+phone_num.send_keys(config["PHONE_NUM"])
 
 date_of_birth = driver.find_element(By.NAME, "dateOfBirth")
-date_of_birth.send_keys(DATE_OF_BIRTH + Keys.ENTER)
+date_of_birth.send_keys(config["DATE_OF_BIRTH"] + Keys.ENTER)
 
 request_payment = driver.find_element(By.CSS_SELECTOR, "#카톡결제 > div > div._form-wrap_s43yp_6 > form > button")
 request_payment.click()
