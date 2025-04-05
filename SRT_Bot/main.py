@@ -28,6 +28,11 @@ REFRESH_INTERVAL = 5
 SCROLL_TIME = 1
 TABLOAD_TIME = 0.5
 
+seat_index = {
+  "일반실": 7, 
+  "특실": 6 
+}
+
 options = Options()
 options.add_experimental_option("detach", True)
 options.add_argument("--disable-blink-features=AutomationControlled")
@@ -74,21 +79,28 @@ submit = driver.find_element(By.CSS_SELECTOR, "#search_top_tag > input")
 submit.click()
 
 #loading time table
-wait.until(
-    EC.presence_of_element_located((By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(7) > table > tbody > tr:nth-child(3) > td:nth-child(7) > a"))
-)
+try:
+    wait.until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(7) > table > tbody > tr:nth-child(" + config["DEP_TIME_INDEX"] +") > td:nth-child(" + seat_index[config["SEAT_CLASS"]] + ") > a"))
+    ) 
+    #select time table - SRT312 and SRT361
+    time.sleep(SCROLL_TIME)
+    dep_train = driver.find_element(By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(7) > table > tbody > tr:nth-child(" + config["DEP_TIME_INDEX"] +") > td:nth-child(" + seat_index[config["SEAT_CLASS"]] + ") > a")
+    dep_train.click()
+except Exception as e:
+    print("Tickets sold out")
+    time.sleep(WAIT_TIME) #waits 10sec for you to select a train manually in case the tickets are sold out for the train you're trying to take
+finally:
+    time.sleep(SCROLL_TIME)
 
-#select time table - SRT312 and SRT361
-time.sleep(SCROLL_TIME)
-dep_train = driver.find_element(By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(7) > table > tbody > tr:nth-child(3) > td:nth-child(7) > a")
-dep_train.click()
-
-time.sleep(SCROLL_TIME)
-
-arv_train = driver.find_element(By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(14) > table > tbody > tr:nth-child(3) > td:nth-child(7) > a")
-arv_train.click()
-
-time.sleep(SCROLL_TIME)
+try:
+    arv_train = driver.find_element(By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(14) > table > tbody > tr:nth-child(" + config["ARV_TIME_INDEX"] +") > td:nth-child(" + seat_index[config["SEAT_CLASS"]] + ") > a")
+    arv_train.click()
+except Exception as e:
+    print("Tickets sold out")
+    time.sleep(WAIT_TIME) #waits 10sec for you to select a train manually in case the tickets are sold out for the train you're trying to take
+finally:
+    time.sleep(SCROLL_TIME)
 
 submit2 = driver.find_element(By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(20) > input.btn_midium.btn_blue_dark.val_m.wx100")
 submit2.click()
