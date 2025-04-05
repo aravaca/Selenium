@@ -76,6 +76,8 @@ Once the booking is complete, you'll receive a payment request via KakaoTalk.
 As long as you have your payment methods set up, just tap "Pay", and you're all set!
 You will have 20 seconds to tap the button and after that, the program will indefinitely hit the 'Done' button, completing the whole process.
 
+![Screenshot_20250405_174712_KakaoTalk.jpg](https://github.com/user-attachments/assets/abc03da3-19f7-424a-ad3f-85563e9b9912)
+
 
 ## License
 [CC BY-NC 4.0]https://creativecommons.org/licenses/by-nc/4.0/deed.en
