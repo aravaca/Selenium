@@ -1,6 +1,6 @@
 # SRT(Super Rapid Train) Ticket Auto-Booker
 
-![428318974-1e0b1db4-4918-466d-a23d-bd43b6398fa9](https://github.com/user-attachments/assets/ac72ed4b-8373-46e4-8767-78d00fa20f14)
+![SRT](https://github.com/user-attachments/assets/ac72ed4b-8373-46e4-8767-78d00fa20f14)
 
 
 During my military service in Daejeon, I got tired of manually booking the same SRT train ticket to Seoul every time I had leave. The process was always the same—same station, same time, same train—and it got old fast. So I built this automation tool to streamline it.
@@ -76,7 +76,7 @@ Once the booking is complete, you'll receive a payment request via KakaoTalk.
 As long as you have your payment methods set up, just tap "Pay", and you're all set!
 You will have 20 seconds to tap the button and after that, the program will indefinitely hit the 'Done' button, completing the whole process.
 
-![Screenshot_20250405_174712_KakaoTalk.jpg](https://github.com/user-attachments/assets/abc03da3-19f7-424a-ad3f-85563e9b9912)
+![Receipt](https://github.com/user-attachments/assets/abc03da3-19f7-424a-ad3f-85563e9b9912)
 
 
 ## License
