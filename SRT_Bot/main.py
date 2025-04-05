@@ -10,6 +10,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import UnexpectedAlertPresentException
 import time
 import json
 
@@ -28,9 +29,9 @@ REFRESH_INTERVAL = 5
 SCROLL_TIME = 1
 TABLOAD_TIME = 0.5
 
-seat_index = {
-  "일반실": 7, 
-  "특실": 6 
+class_index = {
+  "일반실": "7", 
+  "특실": "6" 
 }
 
 options = Options()
@@ -79,28 +80,22 @@ submit = driver.find_element(By.CSS_SELECTOR, "#search_top_tag > input")
 submit.click()
 
 #loading time table
-try:
-    wait.until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(7) > table > tbody > tr:nth-child(" + config["DEP_TIME_INDEX"] +") > td:nth-child(" + seat_index[config["SEAT_CLASS"]] + ") > a"))
-    ) 
-    #select time table - SRT312 and SRT361
-    time.sleep(SCROLL_TIME)
-    dep_train = driver.find_element(By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(7) > table > tbody > tr:nth-child(" + config["DEP_TIME_INDEX"] +") > td:nth-child(" + seat_index[config["SEAT_CLASS"]] + ") > a")
-    dep_train.click()
-except Exception as e:
-    print("Tickets sold out")
-    time.sleep(WAIT_TIME) #waits 10sec for you to select a train manually in case the tickets are sold out for the train you're trying to take
-finally:
-    time.sleep(SCROLL_TIME)
+wait.until(
+    EC.presence_of_element_located((By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(7) > table > tbody > tr:nth-child(" + config["DEP_TIME_INDEX"] +") > td:nth-child(" + class_index[config["SEAT_CLASS"]] + ") > a"))
+) 
+    
+#select time table - SRT312 and SRT361
+time.sleep(SCROLL_TIME)
 
-try:
-    arv_train = driver.find_element(By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(14) > table > tbody > tr:nth-child(" + config["ARV_TIME_INDEX"] +") > td:nth-child(" + seat_index[config["SEAT_CLASS"]] + ") > a")
-    arv_train.click()
-except Exception as e:
-    print("Tickets sold out")
-    time.sleep(WAIT_TIME) #waits 10sec for you to select a train manually in case the tickets are sold out for the train you're trying to take
-finally:
-    time.sleep(SCROLL_TIME)
+dep_train = driver.find_element(By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(7) > table > tbody > tr:nth-child(" + config["DEP_TIME_INDEX"] +") > td:nth-child(" + class_index[config["SEAT_CLASS"]] + ") > a")
+dep_train.click()
+
+time.sleep(SCROLL_TIME)
+
+arv_train = driver.find_element(By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(14) > table > tbody > tr:nth-child(" + config["ARV_TIME_INDEX"] +") > td:nth-child(" + class_index[config["SEAT_CLASS"]] + ") > a")
+arv_train.click()
+
+time.sleep(SCROLL_TIME)
 
 submit2 = driver.find_element(By.CSS_SELECTOR, "#result-form > fieldset > div:nth-child(20) > input.btn_midium.btn_blue_dark.val_m.wx100")
 submit2.click()
@@ -222,9 +217,7 @@ while EC.presence_of_element_located((By.CSS_SELECTOR, "#root > main > div._conf
     else:
         break
 
-# receipt loads and the browser will shut in 10 seconds 
-time.sleep(WAIT_TIME)
-
+# receipt loads and the browser will stay opened
 driver.quit()
 
 
