@@ -72,7 +72,7 @@ python main.py
 Then, enter your desired departure and arrival dates in the terminal.
 
 ### 5. Check KakaoTalk
-Once the booking is complete, you'll receive a payment request via KakaoTalk.
+At the end of the flow, you'll receive a payment request via KakaoTalk.
 As long as you have your payment methods set up, just tap "Pay", and you're all set!
 You will have 20 seconds to tap the button and after that, the program will indefinitely hit the 'Done' button, completing the whole process.
 
