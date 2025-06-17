@@ -1,4 +1,4 @@
-# SRT(Super Rapid Train) Ticket Auto-Booker
+# SRT(Super Rapid Train) Automated Ticketing Software
 
 ![SRT](https://github.com/user-attachments/assets/ac72ed4b-8373-46e4-8767-78d00fa20f14)
 
